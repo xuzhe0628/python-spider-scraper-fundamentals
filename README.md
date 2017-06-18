@@ -47,9 +47,9 @@ Some other notes on GET requests:
 
 __Example__
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/GET.png)
+![]https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GET.png)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/GETRESULT.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GETRESULT.PNG)
 
 #### 2.2 The POST Method
 Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:
@@ -68,11 +68,11 @@ Some other notes on POST requests:
 
 __Example__
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/LOGIN.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/LOGIN.PNG)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/FORM.png)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/FORM.png)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/POST.png)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/POST.png)
 
 ### 3. Capture and parse web page using urllib
 
@@ -110,9 +110,9 @@ for line in pythonRepo:
         print(REPO_REGEX.match(line).group(1))
 ```
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/URLLIBRESULT.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/URLLIBRESULT.PNG)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/URLLIBWEB.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/URLLIBWEB.PNG)
 
 ### 4. Powerful Requests: HTTP for Humans
 
@@ -166,9 +166,9 @@ for repo in repos:
     print(repo.text)
 ```
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/LOGINRESULT.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/LOGINRESULT.PNG)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/GITREPO.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GITREPO.PNG)
 
 ### 5. Web scraper framework: Scrapy
 
@@ -178,7 +178,7 @@ You can use it to build distributed crawler system, use pipeline to process data
 
 Let's write a spider to crawl movie information from `THE MOVIE DB` and store it to MongoDB using item and pipeline.
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/MOVIE.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIE.PNG)
 
 As it is not a standard library, install it using pip.
 
@@ -310,11 +310,11 @@ __Finally!!__
 
 It took me less than 20 minutes to crawled 19633 movies, not bad.
 
-![](Images/MOVIECRAWL.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIECRAWL.PNG)
 
-![](Images/MOVIECOUNT.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIECOUNT.PNG)
 
-![](Images/MOVIEDETAIL.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIEDETAIL.PNG)
 
 ### 6. Using API ###
 
@@ -374,9 +374,9 @@ for item in collection:
 # upload_onedrive(client, base_folder, archive_folder + '.zip')
 ```
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/ONEDRIVEAUTH.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/ONEDRIVEAUTH.PNG)
 
-![](https://github.com/xuzhe0628/python-spider-scraper-fundamentals/tree/master/Images/ONEDRIVEAPI.PNG)
+![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/ONEDRIVEAPI.PNG)
 
 ### Summary ###
 
