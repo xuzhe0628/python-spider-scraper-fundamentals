@@ -1,0 +1,1 @@
+https://login.live.com/oauth20_authorize.srf?client_id=b1e06d8b-5189-450e-b49e-841bc3494491&redirect_uri=https%3A%2F%2Flocalhost%3A8080&scope=wl.signin+wl.offline_access+onedrive.readwrite&response_type=code
