@@ -47,9 +47,9 @@ Some other notes on GET requests:
 
 __Example__
 
-![]https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GET.png)
+![](Images/GET.png)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GETRESULT.PNG)
+![](Images/GETRESULT.PNG)
 
 #### 2.2 The POST Method
 Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:
@@ -68,11 +68,11 @@ Some other notes on POST requests:
 
 __Example__
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/LOGIN.PNG)
+![](Images/LOGIN.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/FORM.png)
+![](Images/FORM.png)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/POST.png)
+![](Images/POST.png)
 
 ### 3. Capture and parse web page using urllib
 
@@ -110,9 +110,9 @@ for line in pythonRepo:
         print(REPO_REGEX.match(line).group(1))
 ```
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/URLLIBRESULT.PNG)
+![](Images/URLLIBRESULT.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/URLLIBWEB.PNG)
+![](Images/URLLIBWEB.PNG)
 
 ### 4. Powerful Requests: HTTP for Humans
 
@@ -166,9 +166,9 @@ for repo in repos:
     print(repo.text)
 ```
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/LOGINRESULT.PNG)
+![](Images/LOGINRESULT.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/GITREPO.PNG)
+![](Images/GITREPO.PNG)
 
 ### 5. Web scraper framework: Scrapy
 
@@ -178,7 +178,7 @@ You can use it to build distributed crawler system, use pipeline to process data
 
 Let's write a spider to crawl movie information from `THE MOVIE DB` and store it to MongoDB using item and pipeline.
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIE.PNG)
+![](Images/MOVIE.PNG)
 
 As it is not a standard library, install it using pip.
 
@@ -310,19 +310,134 @@ __Finally!!__
 
 It took me less than 20 minutes to crawled 19633 movies, not bad.
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIECRAWL.PNG)
+![](Images/MOVIECRAWL.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIECOUNT.PNG)
+![](Images/MOVIECOUNT.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/MOVIEDETAIL.PNG)
+![](Images/MOVIEDETAIL.PNG)
 
 ### 6. Using API ###
 
 Many services, such as Google Map, OneDrive and Box, has provided official API for user to automatically some routine tasks. With API, we don't need to build the post or get request by ourself.
 
-#### OneDrive API ####
+#### Box API ####
+
+[boxsdk](https://pypi.python.org/pypi/boxsdk/1.5.3#authorization) is the official Box Python SDK package. It also uses OAuth2 for authentication. You need to use below command to install it.
+
+`pip install boxsdk`
+
+Below are some links that you may need.
+
+[Documentation](http://box-python-sdk.readthedocs.io/en/latest/)
+
+[Source Code](https://github.com/box/box-python-sdk)
+
+[Box Developer Docs](https://developer.box.com/docs)
+
+Before using box API, you need to create a box application following below [guide](https://developer.box.com/docs/getting-started-box-integration). You will create and get `clientId`, `clientSecret` and `redirectUri` that you need for the demo.
+
+![](Images/BOXAPP.PNG)
+
+Below is some demo codes for create a test folder, upload an image to the newly created folder and get its shared link.
+
+```python
+import json
+import requests
+import webbrowser
+
+from boxsdk import OAuth2
+from boxsdk import Client
+
+# Configuration
+clientId = '' # input your client id
+clientSecret = '' # input your client pass
+tokenUrl = 'https://api.box.com/oauth2/token'
+authUrl = 'https://account.box.com/api/oauth2/authorize'
+redirectUri = 'http://localhost'
+state = '' # input your state
+getCodeType = 'code'
+getTokenType = 'authorization_code'
+refreshTokenType = 'refresh_token'
+
+
+# First leg authetication, get the code for getting access token
+def get_code(url, type, id, redirect, state):
+    authUrl = (url + '?response_type='
+                + type + '&client_id=' + id + '&state='
+                + state + '&redirect_uri=' + redirect)
+    webbrowser.open(authUrl, new=0)
+
+    # Paste the code returned by box in browser address line after you grant access
+    authCode = input("Please enter the auth code got form browser: ")
+    return authCode
+
+# Get access token
+def get_access_refresh_token(url, type, code, id, secret, uri):
+    resp = requests.post(
+        url,
+        data={'grant_type': type,
+            'code': code,
+            'client_id': id,
+            'client_secret': secret,
+            'redirect_uri:': uri,
+        }
+    )
+    
+    tokenData = json.loads(resp.text)
+    print(tokenData)
+    accessToken = tokenData['access_token']
+    refreshToken = tokenData['refresh_token']
+    return accessToken, refreshToken
+
+# Using refresh token to get new access token if necessary
+
+def refresh_token(url, type, id, secret, refreshToken):
+    resp = requests.post(
+        url,
+        data={'grant_type': type,
+            'client_id': id,
+            'client_secret': secret,
+            'refresh_token': refreshToken}
+    )
+    tokenData = json.loads(resp.text)
+    accessToken = tokenData['access_token']
+    refreshToken = tokenData['fresh_token']
+    return accessToken, refreshToken
+    
+    
+if __name__ == '__main__':
+    authCode = get_code(authUrl, getCodeType, clientId, redirectUri, state)
+    accessToken, refreshToken = get_access_refresh_token(
+        tokenUrl, getTokenType, authCode, clientId, clientSecret, redirectUri
+    )
+    # print('access_token: ' + accessToken + '\nrefresh_token: ' + refreshToken)
+    
+    oauth = OAuth2(
+        client_id=clientId,
+        client_secret=clientSecret,
+        access_token=accessToken,
+    )
+    client = Client(oauth)
+    root_folder = client.folder(folder_id='0')
+    shared_folder = root_folder.create_subfolder('api_test_folder')
+    uploaded_file = shared_folder.upload(r'C:\Users\daniel.xu\Desktop\tmp\IMG_0049.png')
+    shared_link = shared_folder.get_shared_link()
+    print(shared_link)
+```
+
+![](Images/BOXAUTH.PNG)
+
+![](Images/BOXTOKEN.PNG)
+
+![](Images/BOXUPLOAD.PNG)
+
+![](Images/BOXRESULT.PNG)
+
+#### OneDrive API
 
 [onedrivesdk][https://github.com/OneDrive/onedrive-sdk-python] is the python API for OneDrive. OneDrive API uses the standard OAuth 2.0 *authentication* scheme to authenticate users and generate access tokens. To use the API to login into your OneDrive account, you need to understand the [authentication mechanism](https://dev.onedrive.com/auth/msa_oauth.htm).
+
+Before using OneDrive API, you need to create an OneDrive application following below [guide](https://dev.onedrive.com/app-registration.htm) You will create and get `client_id`, `client_secret` and `redirect_uri` that you need for the demo. 
 
 Below script is using Code Flow for authentication and print out the basic account information after login.
 
@@ -374,9 +489,9 @@ for item in collection:
 # upload_onedrive(client, base_folder, archive_folder + '.zip')
 ```
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/ONEDRIVEAUTH.PNG)
+![](Images/ONEDRIVEAUTH.PNG)
 
-![](https://raw.githubusercontent.com/xuzhe0628/python-spider-scraper-fundamentals/master/Images/ONEDRIVEAPI.PNG)
+![](Images/ONEDRIVEAPI.PNG)
 
 ### Summary ###
 
